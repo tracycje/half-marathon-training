@@ -1,26 +1,139 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
-
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --color-background: #fdf8f3;
+  --color-surface: #ffffff;
+  --color-surface-2: #f7efe3;
+  --color-border: #ece4d6;
+  --color-foreground: #2a2118;
+  --color-muted: #9b8e7e;
+  --color-accent: #fb923c;
+  --font-sans: var(--font-dm-sans);
+  --font-mono: var(--font-dm-mono);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+html,
+body {
+  background: #fdf8f3;
+  color: #2a2118;
+  font-family: var(--font-dm-sans), system-ui, sans-serif;
+  font-weight: 400;
+  -webkit-font-smoothing: antialiased;
+  -webkit-tap-highlight-color: transparent;
+  text-rendering: optimizeLegibility;
+}
+
+html {
+  /* Prevent iOS text size auto-adjust on rotation */
+  -webkit-text-size-adjust: 100%;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  /* Avoid horizontal rubber-band; allow vertical scroll */
+  overscroll-behavior-x: none;
+}
+
+input,
+select,
+textarea {
+  font-size: 16px;
+}
+
+/* Tabular numerals for stats so columns stay aligned */
+[style*="--font-dm-mono"],
+.tabular {
+  font-variant-numeric: tabular-nums;
+}
+
+/* Remove default tap highlight + manipulation latency on interactive elements */
+button,
+a,
+[role="button"] {
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
+  -webkit-user-select: none;
+  user-select: none;
+}
+
+/* Subtle paper-grain texture */
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  opacity: 0.06;
+  mix-blend-mode: multiply;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 200'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/></filter><rect width='200' height='200' filter='url(%23n)'/></svg>");
+}
+
+body > * {
+  position: relative;
+  z-index: 1;
+}
+
+@keyframes fadeSlide {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes barFill {
+  from {
+    width: 0%;
+  }
+}
+
+@keyframes pulseGlow {
+  0%,
+  100% {
+    box-shadow: 0 0 0 0 rgba(251, 146, 60, 0.55), 0 8px 24px -8px rgba(251, 146, 60, 0.55);
+  }
+  50% {
+    box-shadow: 0 0 0 6px rgba(251, 146, 60, 0), 0 12px 32px -8px rgba(251, 146, 60, 0.7);
+  }
+}
+
+.fade-slide {
+  animation: fadeSlide 200ms cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+.bar-fill {
+  animation: barFill 800ms cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+.cta-glow {
+  box-shadow: 0 8px 24px -8px rgba(251, 146, 60, 0.55);
+}
+
+.cta-glow:hover {
+  animation: pulseGlow 1.6s ease-in-out infinite;
+}
+
+.collapse-grid {
+  display: grid;
+  grid-template-rows: 0fr;
+  transition: grid-template-rows 240ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.collapse-grid.open {
+  grid-template-rows: 1fr;
+}
+
+.collapse-grid > .collapse-inner {
+  overflow: hidden;
+  min-height: 0;
+}
+
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+.no-scrollbar {
+  scrollbar-width: none;
 }
